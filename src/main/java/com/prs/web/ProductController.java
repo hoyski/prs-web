@@ -18,6 +18,10 @@ import com.prs.business.Product;
 
 import com.prs.db.ProductRepo;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/products")
@@ -32,34 +36,39 @@ public class ProductController {
 	private ProductRepo productRepo;
 
 	// Get all products
+	@ApiOperation("Returns all of the Products in the database")
 	@GetMapping("/")
 	public List<Product> getAll() {
 		return productRepo.findAll();
 	}
 
 	// Get a product by id
+	@ApiOperation("Returns the Product with the given ID")
 	@GetMapping("/{id}")
-	public Optional<Product> getById(@PathVariable int id) {
+	public Optional<Product> getById(@PathVariable @ApiParam("Unique ID of the Product") int id) {
 		return productRepo.findById(id);
 	}
 
 	// Add a product
+	@ApiOperation("Adds the given Product to the database. Returns the Product with the ID populated")
 	@PostMapping("/")
-	public Product addProduct(@RequestBody Product p) {
+	public Product addProduct(@RequestBody @ApiParam("The Product to add") Product p) {
 		p = productRepo.save(p);
 		return p;
 	}
 
 	// Update a product
+	@ApiOperation("Updates the given Product in the database to match the given Product. Returns the updated Product")
 	@PutMapping("/")
-	public Product updateProduct(@RequestBody Product p) {
+	public Product updateProduct(@RequestBody @ApiParam("The Product to update") Product p) {
 		p = productRepo.save(p);
 		return p;
 	}
 
 	// Delete a product
+	@ApiOperation("Deletes the Product with the given ID if it exists from the database")
 	@DeleteMapping("/{id}")
-	public Product deleteProduct(@PathVariable int id) {
+	public Product deleteProduct(@PathVariable @ApiParam("Unique ID of the Product to delete") int id) {
 		// Optional type will wrap a product
 		Optional<Product> p = productRepo.findById(id);
 		// isPresent() will return true if a product was found
